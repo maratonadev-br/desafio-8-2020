@@ -1,0 +1,89 @@
+---
+swagger: '2.0'
+info:
+  description: 'API para análise de fala e recomendação de carros da FCA'
+  version: '2.0.0'
+  title: 'Desafio 8 - Maratona Behind the Code API'
+tags:
+  - name: 'Recomendação'
+    description: 'Análise de fala e recomendação de carro'
+schemes:
+  - 'http'
+paths:
+  /api/audio:
+    post:
+      tags:
+        - 'Recomendação'
+      summary: 'Analisa críticas contidas em um arquivo de áudio e recomenda um carro da FCA dependendo das críticas.'
+      description: ''
+      consumes:
+        - 'multipart/form-data'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'audio'
+          in: 'formData'
+          description: 'Áudio em formato FLAC contendo uma crítica ou comentário sobre um carro.'
+          required: true
+          type: 'file'
+        - name: 'car'
+          in: 'formData'
+          description: 'Nome do carro sobre o qual o comentário ou crítica é feito.'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'Operação sucedida'
+          schema:
+            $ref: '#/definitions/Result'
+  /api/text:
+    post:
+      tags:
+        - 'Recomendação'
+      summary: 'Analisa críticas contidas em um texto e recomenda um carro da FCA dependendo das críticas.'
+      description: ''
+      consumes:
+        - 'multipart/form-data'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'text'
+          in: 'formData'
+          description: 'Texto contendo uma crítica ou comentário sobre um carro.'
+          required: true
+          type: 'string'
+        - name: 'car'
+          in: 'formData'
+          description: 'Nome do carro sobre o qual o comentário ou crítica é feito.'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'Operação sucedida'
+          schema:
+            $ref: '#/definitions/Result'
+definitions:
+  Entity:
+    type: 'object'
+    properties:
+      entity:
+        type: 'string'
+        example: 'desempenho'
+      sentiment:
+        type: 'number'
+        example: -0.95
+      mention:
+        type: 'string'
+        example: 'motor'
+  Result:
+    type: 'object'
+    required:
+      - 'entities'
+    properties:
+      recommendation:
+        type: 'string'
+        example: 'Fiat Argo'
+      entities:
+        type: 'array'
+        items:
+          $ref: '#/definitions/Entity'
