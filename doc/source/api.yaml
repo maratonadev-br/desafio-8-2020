@@ -10,53 +10,32 @@ tags:
 schemes:
   - 'http'
 paths:
-  /api/audio:
+  /api/recommend:
     post:
       tags:
         - 'Recomendação'
-      summary: 'Analisa críticas contidas em um arquivo de áudio e recomenda um carro da FCA dependendo das críticas.'
+      summary: 'Analisa críticas contidas em um arquivo de áudio ou em um texto e recomenda um carro da FCA dependendo das críticas.'
       description: ''
       consumes:
         - 'multipart/form-data'
       produces:
         - 'application/json'
       parameters:
-        - name: 'audio'
-          in: 'formData'
-          description: 'Áudio em formato FLAC contendo uma crítica ou comentário sobre um carro.'
-          required: true
-          type: 'file'
         - name: 'car'
           in: 'formData'
           description: 'Nome do carro sobre o qual o comentário ou crítica é feito.'
           required: true
           type: 'string'
-      responses:
-        200:
-          description: 'Operação sucedida'
-          schema:
-            $ref: '#/definitions/Result'
-  /api/text:
-    post:
-      tags:
-        - 'Recomendação'
-      summary: 'Analisa críticas contidas em um texto e recomenda um carro da FCA dependendo das críticas.'
-      description: ''
-      consumes:
-        - 'multipart/form-data'
-      produces:
-        - 'application/json'
-      parameters:
         - name: 'text'
           in: 'formData'
           description: 'Texto contendo uma crítica ou comentário sobre um carro.'
-          required: true
+          required: false
           type: 'string'
-        - name: 'car'
+        - name: 'audio'
           in: 'formData'
-          description: 'Nome do carro sobre o qual o comentário ou crítica é feito.'
-          required: true
-          type: 'string'
+          description: 'Áudio em formato FLAC contendo uma crítica ou comentário sobre um carro.'
+          required: false
+          type: 'file'
       responses:
         200:
           description: 'Operação sucedida'
